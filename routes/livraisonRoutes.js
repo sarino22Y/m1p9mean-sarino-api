@@ -81,5 +81,4 @@ router.delete('/livraison/:idLivraison', (req, res, next) => {
     );
 });
 
-
 module.exports = router;
