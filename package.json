@@ -1,6 +1,9 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "engines": {
+    "node": "14.18.1"
+  },
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -26,8 +29,5 @@
   "devDependencies": {
     "@types/passport-jwt": "^3.0.6",
     "nodemon": "^2.0.15"
-  },
-  "engines": {
-    "node": "14.18.1"
   }
 }
