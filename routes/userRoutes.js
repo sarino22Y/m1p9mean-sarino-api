@@ -23,12 +23,14 @@ const user = require('../models/user');
 /**
  * Persister un user.
  */
-router.post('/adduser', (req, res, next) => {
+router.post('/register', (req, res, next) => {
     let newUser = new user({
-        idUser: req.body.idUser,
         name: req.body.name,
-        address: req.body.address,
-        tel: req.body.tel
+        userName: req.body.userName,
+        email: req.body.email,
+        adress: req.body.adress,
+        password: req.body.password,
+        creationDate: Date.now()
     });
     console.log(req.body);
 

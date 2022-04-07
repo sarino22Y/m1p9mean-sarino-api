@@ -12,8 +12,8 @@ const assUserPrivilegeRoute = require('./routes/assUserPrivilegeRoutes');
 
 const app = express();
 const port = process.env.PORT || 3000;
-// const connectionString = "mongodb://localhost:27017/ekaly22y";
-const connectionString = "mongodb+srv://sarino:sarino@cluster0.xzdv9.mongodb.net/ekaly22y?retryWrites=true&w=majority";
+const connectionString = "mongodb://localhost:27017/ekaly22y";
+// const connectionString = "mongodb+srv://sarino:sarino@cluster0.xzdv9.mongodb.net/ekaly22y?retryWrites=true&w=majority";
 
 
 // Connecter à mongodb.
@@ -30,10 +30,10 @@ mongoose.connection.on('error', (err) =>{
 });
 
 
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', platRoute);
 app.use('/api', restaurantRoute);
 app.use('/api', commandeRoute);
