@@ -10,7 +10,7 @@ const User = mongoose.Schema({
     creationDate: {type: Date}
 });
 
-User.static.hasPassword = function hashPassword(password){
+User.statics.hashPassword = function hashPassword(password){
     return bcrypt.hashSync(password, 10);
 }
 

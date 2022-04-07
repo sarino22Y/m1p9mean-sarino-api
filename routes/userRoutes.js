@@ -29,7 +29,7 @@ router.post('/register', (req, res, next) => {
         userName: req.body.userName,
         email: req.body.email,
         adress: req.body.adress,
-        password: req.body.password,
+        password: user.hashPassword(req.body.password),
         creationDate: Date.now()
     });
     console.log(req.body);
@@ -41,6 +41,22 @@ router.post('/register', (req, res, next) => {
             res.json({msg: "User insere avec succes."});
         }
     });
+});
+
+/**
+ * login user.
+ */
+ router.post('/login', (req, res, next) => {
+    passport.use(new LocalStrategy(
+        function(username, password, done) {
+            user.findOne({ username: username }, function (err, user) {
+            if (err) { return done(err); }
+            if (!user) { return done(null, false); }
+            if (!user.verifyPassword(password)) { return done(null, false); }
+            return done(null, user);
+          });
+        }
+      ));
 });
 
 /**
