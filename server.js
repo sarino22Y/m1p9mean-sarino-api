@@ -10,6 +10,11 @@ const userRoute = require('./routes/userRoutes');
 const privilegeRoute = require('./routes/privilegeRoutes');
 const assUserPrivilegeRoute = require('./routes/assUserPrivilegeRoutes');
 
+// passport
+const passport = require('passport');
+const session = require('express-session');
+require("./passport-config");
+
 const app = express();
 const port = process.env.PORT || 3000;
 const connectionString = "mongodb://localhost:27017/ekaly22y";
@@ -29,11 +34,28 @@ mongoose.connection.on('error', (err) =>{
     console.log(err);
 });
 
+// passport.
+app.use(session({
+    name: 'myname.sid',
+    resave: false,
+    saveUninitialized: true,
+    secret: 'secret',
+    cookie: {
+        maxAge: 36000000,
+        httpOnly: false,
+        secure: false
+    }
+}))
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:4200'],
+    credentials: true
+}));
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', platRoute);
 app.use('/api', restaurantRoute);
 app.use('/api', commandeRoute);
