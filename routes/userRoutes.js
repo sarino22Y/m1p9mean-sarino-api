@@ -52,7 +52,7 @@ router.post('/register', (req, res, next) => {
 router.post('/login', 
     async function(req, res, next) {
         const {username, password} = req.body;
-        const userawait = await  user.findOne({username: 'sarino'}).lean();
+        const userawait = await  user.findOne({username: username}).lean();
         if (!userawait) {
             return res.json({status: 'error', error: "Invalid username/password"});
         }
@@ -61,7 +61,13 @@ router.post('/login',
                 id: userawait._id,
                 username: userawait.username
             },
-            JWT_SECRET
+            JWT_SECRET,
+            {
+                expiresIn: "120s" // it will be expired after 10 hours
+                //expiresIn: "20d" // it will be expired after 20 days
+                //expiresIn: 120 // it will be expired after 120ms
+                //expiresIn: "120s" // it will be expired after 120s
+            }
             )
             return res.json({status: 'Ok', jwtToken: token});
         }
