@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = "secret";
 
 const user = require('../models/user');
 
@@ -26,7 +29,7 @@ const user = require('../models/user');
 router.post('/register', (req, res, next) => {
     let newUser = new user({
         name: req.body.name,
-        userName: req.body.userName,
+        username: req.body.username,
         email: req.body.email,
         adress: req.body.adress,
         password: user.hashPassword(req.body.password),
@@ -46,18 +49,25 @@ router.post('/register', (req, res, next) => {
 /**
  * login user.
  */
- router.post('/login', (req, res, next) => {
-    passport.use(new LocalStrategy(
-        function(username, password, done) {
-            user.findOne({ username: username }, function (err, user) {
-            if (err) { return done(err); }
-            if (!user) { return done(null, false); }
-            if (!user.verifyPassword(password)) { return done(null, false); }
-            return done(null, user);
-          });
+router.post('/login', 
+    async function(req, res, next) {
+        const {username, password} = req.body;
+        const userawait = await  user.findOne({username: 'sarino'}).lean();
+        if (!userawait) {
+            return res.json({status: 'error', error: "Invalid username/password"});
         }
-      ));
-});
+        if (await  bcrypt.compare(password, userawait.password)) {
+            const token = jwt.sign({
+                id: userawait._id,
+                username: userawait.username
+            },
+            JWT_SECRET
+            )
+            return res.json({status: 'Ok', jwtToken: token});
+        }
+        return res.json({status: 'error', error: "Invalid email/password"});
+    }
+);
 
 /**
  * Mettre à jour un user.
