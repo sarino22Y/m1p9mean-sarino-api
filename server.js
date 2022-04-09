@@ -10,11 +10,27 @@ const userRoute = require('./routes/userRoutes');
 const privilegeRoute = require('./routes/privilegeRoutes');
 const assUserPrivilegeRoute = require('./routes/assUserPrivilegeRoutes');
 
+const passport = require("passport");
+
 const app = express();
 const port = process.env.PORT || 3000;
-// const connectionString = "mongodb://localhost:27017/ekaly22y";
-const connectionString = "mongodb+srv://sarino:sarino@cluster0.xzdv9.mongodb.net/ekaly22y?retryWrites=true&w=majority";
+const connectionString = "mongodb://localhost:27017/ekaly22y";
+// const connectionString = "mongodb+srv://sarino:sarino@cluster0.xzdv9.mongodb.net/ekaly22y?retryWrites=true&w=majority";
 
+app.use((req, res, next) =>{
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    res.header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,POST,PUT,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
+})
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(passport.initialize());
+
+require("./middlewares/passport")(passport);
 
 // Connecter à mongodb.
 mongoose.connect(connectionString);
@@ -30,17 +46,9 @@ mongoose.connection.on('error', (err) =>{
 });
 
 
+// User Router Middleware
+app.use("/api/users", require("./routes/userRoutes"));
 
-app.use((req, res, next) =>{
-    res.header("Access-Control-Allow-Origin", req.headers.origin);
-    res.header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,POST,PUT,DELETE,OPTIONS");
-    res.header("Access-Control-Allow-Credentials", "true");
-    next();
-})
-app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', platRoute);
 app.use('/api', restaurantRoute);
 app.use('/api', commandeRoute);

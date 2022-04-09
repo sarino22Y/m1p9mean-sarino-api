@@ -4,7 +4,96 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = "secret";
 
+// Introduire la fonction d'enregistrement des utilisateurs
+const {
+    userAuth,
+    userLogin,
+    checkRole,
+    userRegister,
+    serializeUser
+} = require("../utils/Auth");
+
 const user = require('../models/user');
+  
+// Client Registeration Route
+router.post("/register-client", async (req, res) => {
+await userRegister(req.body, "client", res);
+});
+
+// Restaurant Registration Route
+router.post("/register-restaurant", async (req, res) => {
+await userRegister(req.body, "restaurant", res);
+});
+
+// Deliverer Registration Route
+router.post("/register-ekaly", async (req, res) => {
+await userRegister(req.body, "ekaly", res);
+});
+
+// Client Login Route
+router.post("/login-client", async (req, res) => {
+    await userLogin(req.body, "client", res);
+});
+  
+// Restaurant Login Route
+router.post("/login-restaurant", async (req, res) => {
+    await userLogin(req.body, "restaurant", res);
+});
+
+// Deliverer Login Route
+router.post("/login-deliverer", async (req, res) => {
+    await userLogin(req.body, "deliverer", res);
+});
+
+// Ekaly Login Route
+router.post("/login-ekaly", async (req, res) => {
+    await userLogin(req.body, "ekaly", res);
+});
+
+// Profile Route
+router.get("/profile", userAuth, async (req, res) => {
+    return res.json(serializeUser(req.user));
+});
+
+// Client Protected Route
+router.get(
+    "/client-protectd",
+    userAuth,
+    checkRole(["client","ekaly"]),
+    async (req, res) => {
+        return res.json("Bonjour Client.");
+    }
+);
+
+// Restaurant Protected Route
+router.get(
+    "/restaurant-protectd",
+    userAuth,
+    checkRole(["restaurant","ekaly"]),
+    async (req, res) => {
+        return res.json("Bonjour restaurant.");
+    }
+);
+
+// Deliverere Protected Route
+router.get(
+    "/deliverer-protectd",
+    userAuth,
+    checkRole(["deliverer","ekaly"]),
+    async (req, res) => {
+        return res.json("Bonjour Deliverer");
+    }
+);
+
+// Ekaly Admin Protected Route
+router.get(
+    "/ekaly-protectd",
+    userAuth,
+    checkRole(["ekaly"]),
+    async (req, res) => {
+        return res.json("Bonjour Ekaly");
+    }
+);
 
 /**
  * Retourner la liste des user.
@@ -24,84 +113,10 @@ const user = require('../models/user');
 });
 
 /**
- * Persister un user.
- */
-router.post('/register', (req, res, next) => {
-    let newUser = new user({
-        name: req.body.name,
-        username: req.body.username,
-        email: req.body.email,
-        adress: req.body.adress,
-        password: user.hashPassword(req.body.password),
-        creationDate: Date.now()
-    });
-    console.log(req.body);
-
-    newUser.save((err, user) =>{
-        if (err) {
-            res.json(err);
-        } else {
-            res.json({msg: "User insere avec succes."});
-        }
-    });
-});
-
-/**
- * login user.
- */
-router.post('/login', 
-    async function(req, res, next) {
-        const {username, password} = req.body;
-        const userawait = await  user.findOne({username: username}).lean();
-        if (!userawait) {
-            return res.json({status: 'error', error: "Invalid username/password"});
-        }
-        if (await  bcrypt.compare(password, userawait.password)) {
-            const token = jwt.sign({
-                id: userawait._id,
-                username: userawait.username
-            },
-            JWT_SECRET,
-            {
-                expiresIn: "120s" // it will be expired after 10 hours
-                //expiresIn: "20d" // it will be expired after 20 days
-                //expiresIn: 120 // it will be expired after 120ms
-                //expiresIn: "120s" // it will be expired after 120s
-            }
-            )
-            return res.json({status: 'Ok', jwtToken: token});
-        }
-        return res.json({status: 'error', error: "Invalid email/password"});
-    }
-);
-
-/**
- * Mettre à jour un user.
- */
-router.put('/updateuser/:idUser', (req, res, next) => {
-    user.findOneAndUpdate({ idUser: req.params.idUser}, {
-            $set: {
-                name: req.body.name,
-                address: req.body.address,
-                tel: req.body.tel
-            }
-        },
-        function (err, result) {
-            if (err) {
-                res.json(err);
-            } else {
-                res.json({msg: "User mis à jour avec succes."});
-            }
-        }
-    );
-});
-
-
-/**
  * Supprimer un user.
  */
-router.delete('/user/:idUser', (req, res, next) => {
-    user.deleteOne({idUser: req.params.idUser},
+router.delete('/:idUser', (req, res, next) => {
+    user.deleteOne({_id: req.params.idUser},
         function(err, result) {
             if (err) {
                 res.json(err);
@@ -111,6 +126,5 @@ router.delete('/user/:idUser', (req, res, next) => {
         }
     );
 });
-
 
 module.exports = router;
