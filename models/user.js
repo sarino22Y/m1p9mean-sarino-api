@@ -14,12 +14,4 @@ const User = mongoose.Schema({
     creationDate: {type: Date}
 });
 
-User.statics.hashPassword = function hashPassword(password){
-    return bcrypt.hashSync(password, 10);
-}
-
-User.methods.isValid = function(hashedpassword){
-    return bcrypt.compareSync(hashedpassword, this.password);
-}
-
 module.exports = mongoose.model('users', User);
