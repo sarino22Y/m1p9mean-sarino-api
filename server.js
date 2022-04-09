@@ -12,8 +12,8 @@ const assUserPrivilegeRoute = require('./routes/assUserPrivilegeRoutes');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const connectionString = "mongodb://localhost:27017/ekaly22y";
-// const connectionString = "mongodb+srv://sarino:sarino@cluster0.xzdv9.mongodb.net/ekaly22y?retryWrites=true&w=majority";
+// const connectionString = "mongodb://localhost:27017/ekaly22y";
+const connectionString = "mongodb+srv://sarino:sarino@cluster0.xzdv9.mongodb.net/ekaly22y?retryWrites=true&w=majority";
 
 
 // Connecter à mongodb.
