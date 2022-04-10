@@ -26,9 +26,14 @@ await userRegister(req.body, "restaurant", res);
 });
 
 // Deliverer Registration Route
-router.post("/register-ekaly", async (req, res) => {
-await userRegister(req.body, "ekaly", res);
+router.post("/register-deliverer", async (req, res) => {
+await userRegister(req.body, "deliverer", res);
 });
+
+// Ekaly Registration Route
+router.post("/register-ekaly", async (req, res) => {
+    await userRegister(req.body, "ekaly", res);
+    });
 
 // Client Login Route
 router.post("/login-client", async (req, res) => {
