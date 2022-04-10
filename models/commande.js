@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
 const Commande = mongoose.Schema({
-    idCommande: {type : Number},
-    idPlat: {type : Number},
-    idClient: {type : Number},
-    date: {type: String},
-    dateLivraison: {type: String}
+    namePlat: {type : String},
+    nameClient: {type : String},
+    adressClient: {type : String},
+    mailClient: {type : String},
+    nombre: {type : String},
+    dateLivraison: {type: String},
+    date: {type: Date}
 });
 
 module.exports = mongoose.model('commandes', Commande);

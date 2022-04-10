@@ -25,12 +25,13 @@ const commande = require('../models/commande');
  */
 router.post('/addcommande', (req, res, next) => {
     let newCommande = new commande({
-        idCommande: req.body.idCommande,
-        idPlat: req.body.idPlat,
-        idClient: req.body.idClient,
+        namePlat: req.body.namePlat,
+        nameClient: req.body.nameClient,
+        adressClient: req.body.adressClient,
+        mailClient: req.body.mailClient,
         nombre: req.body.nombre,
-        date: req.body.date,
-        dateLivraison: req.body.dateLivraison
+        dateLivraison: req.body.dateLivraison,
+        date: Date.now()
     });
     console.log(req.body);
 
@@ -47,13 +48,15 @@ router.post('/addcommande', (req, res, next) => {
  * Mettre à jour un commande.
  */
 router.put('/updatecommande/:idCommande', (req, res, next) => {
-    commande.findOneAndUpdate({ idCommande: req.params.idCommande}, {
+    commande.findOneAndUpdate({ _id: req.params.idCommande}, {
             $set: {
-                idPlat: req.body.idPlat,
-                idClient: req.body.idClient,
+                namePlat: req.body.namePlat,
+                nameClient: req.body.nameClient,
+                adressClient: req.body.adressClient,
+                mailClient: req.body.mailClient,
                 nombre: req.body.nombre,
-                date: req.body.date,
-                dateLivraison: req.body.dateLivraison
+                dateLivraison: req.body.dateLivraison,
+                date: Date.now()
             }
         },
         function (err, result) {
