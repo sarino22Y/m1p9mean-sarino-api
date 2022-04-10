@@ -5,7 +5,7 @@ const User = require("../models/user");
 const { SECRET } = require("../config");
 
 /**
- * @DESC To register the user (ADMIN, SUPER_ADMIN, USER)
+ * @DESC To register the user
  */
 const userRegister = async (userDets, role, res) => {
   try {
@@ -51,7 +51,7 @@ const userRegister = async (userDets, role, res) => {
 };
 
 /**
- * @DESC To Login the user (ADMIN, SUPER_ADMIN, USER)
+ * @DESC To Login the user
  */
 const userLogin = async (userCreds, role, res) => {
   let { username, password } = userCreds;
