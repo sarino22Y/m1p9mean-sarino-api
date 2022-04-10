@@ -118,6 +118,26 @@ router.get(
 });
 
 /**
+ * Retourner un utilisateur par son ID.
+ */
+router.get('/users/:idUser', (req, res) => {
+    const ObjectId = require('mongodb').ObjectId; 
+    const id = req.params.idUser;
+    var o_id = new ObjectId(id);
+    user.find({
+        _id: o_id
+    })
+    .then(userFound => {
+        if (!userFound){
+        return res.status(404).end();
+        }
+        // console.log(json(userFound));
+        return res.status(200).json(userFound)
+    })
+    .catch(err => console.log(err));
+})
+
+/**
  * Supprimer un user.
  */
 router.delete('/:idUser', (req, res, next) => {
