@@ -74,7 +74,7 @@ router.put('/updatecommande/:idCommande', (req, res, next) => {
  * Supprimer un commande.
  */
 router.delete('/commande/:idCommande', (req, res, next) => {
-    commande.deleteOne({idCommande: req.params.idCommande},
+    commande.deleteOne({_id: req.params.idCommande},
         function(err, result) {
             if (err) {
                 res.json(err);
