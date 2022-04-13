@@ -24,14 +24,25 @@ const commande = require('../models/commande');
  * Persister un commande.
  */
 router.post('/addcommande', (req, res, next) => {
+    const dateCommante = Date.now();
+    const today = new Date(dateCommante);
+    const td = today.toUTCString();
+    const dateLivraison = req.body.dateLivraison;
+    const dateLivraisonFormated = dateLivraison.replace("T", " à ")
+                                                .replace(":", " h ");
+
+    console.log("TD", td);
+
+    
+    
     let newCommande = new commande({
         namePlat: req.body.namePlat,
         nameClient: req.body.nameClient,
         adressClient: req.body.adressClient,
         mailClient: req.body.mailClient,
         nombre: req.body.nombre,
-        dateLivraison: req.body.dateLivraison,
-        date: Date.now()
+        dateLivraison: dateLivraisonFormated,
+        date: td
     });
     console.log(req.body);
 

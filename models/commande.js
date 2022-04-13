@@ -7,7 +7,7 @@ const Commande = mongoose.Schema({
     mailClient: {type : String},
     nombre: {type : String},
     dateLivraison: {type: String},
-    date: {type: Date}
+    date: {type: String}
 });
 
 module.exports = mongoose.model('commandes', Commande);
