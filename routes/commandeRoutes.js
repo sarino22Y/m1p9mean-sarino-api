@@ -31,10 +31,6 @@ router.post('/addcommande', (req, res, next) => {
     const dateLivraisonFormated = dateLivraison.replace("T", " à ")
                                                 .replace(":", " h ");
 
-    console.log("TD", td);
-
-    
-    
     let newCommande = new commande({
         namePlat: req.body.namePlat,
         nameClient: req.body.nameClient,
