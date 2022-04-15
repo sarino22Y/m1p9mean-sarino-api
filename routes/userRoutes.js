@@ -36,23 +36,8 @@ router.post("/register-ekaly", async (req, res) => {
     });
 
 // Client Login Route
-router.post("/login-client", async (req, res) => {
-    await userLogin(req.body, "client", res);
-});
-  
-// Restaurant Login Route
-router.post("/login-restaurant", async (req, res) => {
-    await userLogin(req.body, "restaurant", res);
-});
-
-// Deliverer Login Route
-router.post("/login-deliverer", async (req, res) => {
-    await userLogin(req.body, "deliverer", res);
-});
-
-// Ekaly Login Route
-router.post("/login-ekaly", async (req, res) => {
-    await userLogin(req.body, "ekaly", res);
+router.post("/login", async (req, res) => {
+    await userLogin(req.body, res);
 });
 
 // Profile Route

@@ -53,8 +53,8 @@ const userRegister = async (userDets, role, res) => {
 /**
  * @DESC To Login the user
  */
-const userLogin = async (userCreds, role, res) => {
-  let { username, password } = userCreds;
+const userLogin = async (userData, res) => {
+  let { username, password, role } = userData;
   // First Check if the username is in the database
   const user = await User.findOne({ username });
   if (!user) {
@@ -63,13 +63,7 @@ const userLogin = async (userCreds, role, res) => {
       success: false
     });
   }
-  // We will check the role
-  if (user.role !== role) {
-    return res.status(403).json({
-      message: "Veuillez vous assurer que vous vous connectez à partir du bon portail.",
-      success: false
-    });
-  }
+  
   // That means user is existing and trying to signin fro the right portal
   // Now check for the password
   let isMatch = await bcrypt.compare(password, user.password);
