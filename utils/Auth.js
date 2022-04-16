@@ -5,9 +5,9 @@ const User = require("../models/user");
 const { SECRET } = require("../config");
 
 /**
- * @DESC To register the user
+ * @DESC To register the user by role
  */
-const userRegister = async (userDets, role, res) => {
+const userRegisterbyRole = async (userDets, role, res) => {
   try {
     // Validate the username
     let usernameNotTaken = await validateUsername(userDets.username);
@@ -47,6 +47,48 @@ const userRegister = async (userDets, role, res) => {
       message: "Impossible de créer le compte.",
       success: false
     });
+  }
+};
+
+/**
+ * @DESC To register the user by role
+ */
+ const userRegister = async (userData, res) => {
+  try {
+    // Validate the username
+    let usernameNotTaken = await validateUsername(userData.username);
+    if (!usernameNotTaken) {
+      return res.status(400).json({
+        message: "Le nom d'utilisateur est déjà pris.",
+        success: false
+      });
+    }
+
+    // validate the email
+    let emailNotRegistered = await validateEmail(userData.email);
+    if (!emailNotRegistered) {
+      return res.status(400).json({
+        message: "L'addresse email est déjà enregistré.",
+        success: false
+      });
+    }
+
+    // Get the hashed password
+    const password = await bcrypt.hash(userData.password, 12);
+    // create a new user
+    const newUser = new User({
+      ...userData,
+      password
+    });
+
+    await newUser.save();
+    return res.status(201).json({
+      message: "Votre compte est créé. Connectez-Vous maintenant.",
+      success: true
+    });
+  } catch (err) {
+    // Implement logger function (winston)
+    return console.log("ERREUR");
   }
 };
 
@@ -140,5 +182,6 @@ module.exports = {
   checkRole,
   userLogin,
   userRegister,
+  userRegisterbyRole,
   serializeUser
 };

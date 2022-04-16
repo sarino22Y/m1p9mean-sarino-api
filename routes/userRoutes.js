@@ -14,25 +14,30 @@ const {
 } = require("../utils/Auth");
 
 const user = require('../models/user');
+
+// Registeration Route for everyone
+router.post("/register", async (req, res) => {
+    await userRegister(req.body, res);
+    });
   
 // Client Registeration Route
 router.post("/register-client", async (req, res) => {
-await userRegister(req.body, "client", res);
+await userRegisterbyRole(req.body, "client", res);
 });
 
 // Restaurant Registration Route
 router.post("/register-restaurant", async (req, res) => {
-await userRegister(req.body, "restaurant", res);
+await userRegisterbyRole(req.body, "restaurant", res);
 });
 
 // Deliverer Registration Route
 router.post("/register-deliverer", async (req, res) => {
-await userRegister(req.body, "deliverer", res);
+await userRegisterbyRole(req.body, "deliverer", res);
 });
 
 // Ekaly Registration Route
 router.post("/register-ekaly", async (req, res) => {
-    await userRegister(req.body, "ekaly", res);
+    await userRegisterbyRole(req.body, "ekaly", res);
     });
 
 // Client Login Route
@@ -108,6 +113,7 @@ router.get(
 router.get('/users/:idUser', (req, res) => {
     const ObjectId = require('mongodb').ObjectId; 
     const id = req.params.idUser;
+    console.log("ID------------", id);
     var o_id = new ObjectId(id);
     user.find({
         _id: o_id
@@ -125,7 +131,7 @@ router.get('/users/:idUser', (req, res) => {
 /**
  * Supprimer un user.
  */
-router.delete('/:idUser', (req, res, next) => {
+router.delete('/users/:idUser', (req, res, next) => {
     user.deleteOne({_id: req.params.idUser},
         function(err, result) {
             if (err) {
