@@ -25,7 +25,6 @@ const plat = require('../models/plat');
  */
 router.post('/addplat', (req, res, next) => {
     let newPlat = new plat({
-        idPlat: req.body.idPlat,
         name: req.body.name,
         number: req.body.number,
         price: req.body.price
