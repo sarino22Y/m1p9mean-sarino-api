@@ -93,6 +93,30 @@ const userRegisterbyRole = async (userDets, role, res) => {
 };
 
 /**
+ * @DESC To ubdate the user.
+ */
+const userUpdate = async (userId, userData, res) => {
+  try {
+    // Get the hashed password
+    const password = await bcrypt.hash(userData.password, 12);
+    await User.findOneAndUpdate({ _id: userId}, {
+      $set: {
+          name: userData.name,
+          username: userData.username,
+          email: userData.email,
+          adress: userData.adress,
+          password: password
+      }});
+    return res.status(201).json({
+      message: "Votre compte a été modifié. Connectez-Vous maintenant.",
+      success: true
+    });
+  } catch (err) {
+    console.log("ERREUR");
+  }
+};
+
+/**
  * @DESC To Login the user
  */
 const userLogin = async (userData, res) => {
@@ -183,5 +207,6 @@ module.exports = {
   userLogin,
   userRegister,
   userRegisterbyRole,
+  userUpdate,
   serializeUser
 };

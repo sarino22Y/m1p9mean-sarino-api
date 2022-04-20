@@ -10,6 +10,8 @@ const {
     userLogin,
     checkRole,
     userRegister,
+    userRegisterbyRole,
+    userUpdate,
     serializeUser
 } = require("../utils/Auth");
 
@@ -143,24 +145,27 @@ router.delete('/users/:idUser', (req, res, next) => {
     );
 });
 
-router.put('/users/:idUser', (req, res, next) => {
-    user.findOneAndUpdate({ _id: req.params.idUser}, {
-            $set: {
-                name: req.body.name,
-                username: req.body.username,
-                email: req.body.email,
-                adress: req.body.adress,
-                password: req.body.password
-            }
-        },
-        function (err, result) {
-            if (err) {
-                res.json(err);
-            } else {
-                res.json({msg: "Utilisateur mis à jour avec succes."});
-            }
-        }
-    );
+router.put('/users/:idUser', async (req, res) => {
+    
+    await userUpdate(req.params.idUser, req.body, res);
+
+    // user.findOneAndUpdate({ _id: req.params.idUser}, {
+    //         $set: {
+    //             name: req.body.name,
+    //             username: req.body.username,
+    //             email: req.body.email,
+    //             adress: req.body.adress,
+    //             password: req.body.password
+    //         }
+    //     },
+    //     function (err, result) {
+    //         if (err) {
+    //             res.json(err);
+    //         } else {
+    //             res.json({msg: "Utilisateur mis à jour avec succes."});
+    //         }
+    //     }
+    // );
 });
 
 module.exports = router;
