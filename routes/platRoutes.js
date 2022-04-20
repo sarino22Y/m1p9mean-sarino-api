@@ -6,7 +6,7 @@ const plat = require('../models/plat');
 /**
  * Retourner la liste des plat.
  */
- router.get('/plats', (req, res) => {
+router.get('/plats', (req, res) => {
     plat.find((err, items) => {
         if (err) {
             console.error(err)
@@ -21,13 +21,35 @@ const plat = require('../models/plat');
 });
 
 /**
+ * Retourner un utilisateur par son ID.
+ */
+router.get('/plat/:idPlat', (req, res) => {
+    const ObjectId = require('mongodb').ObjectId; 
+    const id = req.params.idPlat;
+    console.log("ID------------", id);
+    var o_id = new ObjectId(id);
+    plat.find({
+        _id: o_id
+    })
+    .then(platFound => {
+        if (!platFound){
+        return res.status(404).end();
+        }
+        // console.log(json(platFound));
+        return res.status(200).json(platFound)
+    })
+    .catch(err => console.log(err));
+})
+
+/**
  * Persister un plat.
  */
 router.post('/addplat', (req, res, next) => {
     let newPlat = new plat({
         name: req.body.name,
         number: req.body.number,
-        price: req.body.price
+        price: req.body.price,
+        idRestaurant: req.body.idRestaurant,
     });
     console.log(req.body);
 
@@ -66,7 +88,7 @@ router.put('/updateplat/:idPlat', (req, res, next) => {
  * Supprimer un plat.
  */
 router.delete('/plat/:idPlat', (req, res, next) => {
-    plat.deleteOne({idPlat: req.params.idPlat},
+    plat.deleteOne({_id: req.params.idPlat},
         function(err, result) {
             if (err) {
                 res.json(err);
