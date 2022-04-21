@@ -65,8 +65,8 @@ router.post('/addplat', (req, res, next) => {
 /**
  * Mettre à jour un plat.
  */
-router.put('/updateplat/:idPlat', (req, res, next) => {
-    plat.findOneAndUpdate({ idPlat: parseInt(req.params.idPlat)}, {
+router.put('/plat/:idPlat', (req, res, next) => {
+    plat.findOneAndUpdate({ _id: req.params.idPlat}, {
             $set: {
                 name: req.body.name,
                 number: parseInt(req.body.number),
