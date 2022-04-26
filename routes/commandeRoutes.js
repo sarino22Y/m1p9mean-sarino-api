@@ -34,9 +34,10 @@ router.post('/addcommande', (req, res, next) => {
     let newCommande = new commande({
         namePlat: req.body.namePlat,
         nameClient: req.body.nameClient,
+        idClient: req.body.idClient,
         adressClient: req.body.adressClient,
-        mailClient: req.body.mailClient,
-        nombre: req.body.nombre,
+        emailClient: req.body.emailClient,
+        number: req.body.number,
         dateLivraison: dateLivraisonFormated,
         date: td
     });
@@ -46,7 +47,10 @@ router.post('/addcommande', (req, res, next) => {
         if (err) {
             res.json(err);
         } else {
-            res.json({msg: "Commande insere avec succes."});
+            res.json({
+                msg: "Commande insere avec succes.",
+                commandes : commande
+            });
         }
     });
 });
@@ -60,10 +64,9 @@ router.put('/updatecommande/:idCommande', (req, res, next) => {
                 namePlat: req.body.namePlat,
                 nameClient: req.body.nameClient,
                 adressClient: req.body.adressClient,
-                mailClient: req.body.mailClient,
+                emailClient: req.body.emailClient,
                 nombre: req.body.nombre,
-                dateLivraison: req.body.dateLivraison,
-                date: Date.now()
+                dateLivraison: req.body.dateLivraison
             }
         },
         function (err, result) {
