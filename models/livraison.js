@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
 const Livraison = mongoose.Schema({
-    idLivraison: {type : Number},
-    idLivreur: {type : Number},
-    idCommande: {type : Number},
-    ///date: {type: String},
-    dateLivraison: {type: String}
+    idPlat: {type: String},
+    idCommande: {type : String},
+    dateLivraison: {type: String},
+    number: {type: Number}
 });
 
 module.exports = mongoose.model('livraisons', Livraison);
