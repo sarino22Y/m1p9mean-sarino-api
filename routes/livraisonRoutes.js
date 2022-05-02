@@ -99,7 +99,8 @@ router.post('/addlivraison', (req, res, next) => {
         idCommande: req.body.idCommande,
         number: req.body.number,
         idDeliverer: req.body.idDeliverer,
-        dateLivraison: req.body.dateLivraison
+        dateLivraison: req.body.dateLivraison,
+        status: req.body.status
     });
 
     newLivraison.save((err, livraison) =>{
@@ -120,7 +121,7 @@ router.post('/addlivraison', (req, res, next) => {
 router.put('/livraison/:idLivraison', (req, res, next) => {
     livraison.findOneAndUpdate({ _id: req.params.idLivraison}, {
             $set: {
-                statusLivraison: req.body.statusLivraison
+                status: req.body.status
             }
         },
         function (err, result) {
@@ -156,7 +157,7 @@ router.delete('/livraison/:idLivraison', (req, res, next) => {
         idLivraison: req.body.idLivraison,
         dateLivraison: req.body.dateLivraison,
         number: req.body.number,
-        status: req.body.statusLivraison,
+        status: req.body.status,
         plat: req.body.plat,
         client: req.body.client
     })
