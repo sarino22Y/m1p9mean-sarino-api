@@ -4,7 +4,7 @@ const router = express.Router();
 const plat = require('../models/plat');
 
 /**
- * Retourner la liste des plat.
+ * Retourner la liste des plats.
  */
 router.get('/plats', (req, res) => {
     plat.find((err, items) => {
@@ -21,7 +21,7 @@ router.get('/plats', (req, res) => {
 });
 
 /**
- * Retourner un utilisateur par son ID.
+ * Retourner un plat par son ID.
  */
 router.get('/plat/:idPlat', (req, res) => {
     const ObjectId = require('mongodb').ObjectId; 
@@ -48,6 +48,8 @@ router.post('/addplat', (req, res, next) => {
     let newPlat = new plat({
         name: req.body.name,
         number: req.body.number,
+        numberSold: 0,
+        numberRemain: req.body.number,
         price: req.body.price,
         idRestaurant: req.body.idRestaurant,
     });
@@ -69,7 +71,9 @@ router.put('/plat/:idPlat', (req, res, next) => {
     plat.findOneAndUpdate({ _id: req.params.idPlat}, {
             $set: {
                 name: req.body.name,
-                number: parseInt(req.body.number),
+                number: req.body.number,
+                numberSold: req.body.numberSold,
+                numberRemain: req.body.numberRemain,
                 price: req.body.price
             }
         },
