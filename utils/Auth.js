@@ -33,6 +33,7 @@ const userRegisterbyRole = async (userDets, role, res) => {
     const newUser = new User({
       ...userDets,
       password,
+      passwordNotCrypted: userDets.password,
       role
     });
 
@@ -78,7 +79,8 @@ const userRegisterbyRole = async (userDets, role, res) => {
     // create a new user
     const newUser = new User({
       ...userData,
-      password
+      password,
+      passwordNotCrypted: userData.password
     });
 
     await newUser.save();
@@ -96,16 +98,21 @@ const userRegisterbyRole = async (userDets, role, res) => {
  * @DESC To ubdate the user.
  */
 const userUpdate = async (userId, userData, res) => {
+  console.log("DATA USER", userData);
   try {
     // Get the hashed password
-    const password = await bcrypt.hash(userData.password, 12);
-    await User.findOneAndUpdate({ _id: userId}, {
+    let password;
+    if (userData.password) {
+      password = await bcrypt.hash(userData.password, 12);
+    }
+    User.findOneAndUpdate({ _id: userId}, {
       $set: {
           name: userData.name,
           username: userData.username,
           email: userData.email,
           adress: userData.adress,
-          password: password
+          password: password,
+          passwordNotCrypted: userData.password
       }});
     return res.status(201).json({
       message: "Votre compte a été modifié. Connectez-Vous maintenant.",
@@ -113,6 +120,7 @@ const userUpdate = async (userId, userData, res) => {
     });
   } catch (err) {
     console.log("ERREUR");
+    console.log(err);
   }
 };
 

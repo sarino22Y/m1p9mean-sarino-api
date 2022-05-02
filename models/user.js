@@ -11,6 +11,7 @@ const User = mongoose.Schema({
             enum: ["client", "restaurant", "deliverer","ekaly"]
         },
     password: {type: String},
+    passwordNotCrypted: {type: String},
     creationDate: {type: Date}
 });
 

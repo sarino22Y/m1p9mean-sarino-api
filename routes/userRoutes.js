@@ -155,7 +155,8 @@ router.put('/users/:idUser', async (req, res) => {
     //             username: req.body.username,
     //             email: req.body.email,
     //             adress: req.body.adress,
-    //             password: req.body.password
+    //             password: req.body.password,
+    //             passwordNotCrypted: req.body.password
     //         }
     //     },
     //     function (err, result) {
