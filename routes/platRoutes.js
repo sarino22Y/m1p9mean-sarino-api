@@ -46,12 +46,15 @@ router.get('/plat/:idPlat', (req, res) => {
  */
 router.post('/addplat', (req, res, next) => {
     let newPlat = new plat({
+        idRestaurant: req.body.idRestaurant,
         name: req.body.name,
         number: req.body.number,
         numberSold: 0,
         numberRemain: req.body.number,
         price: req.body.price,
-        idRestaurant: req.body.idRestaurant,
+        expense: req.body.expense,
+        profit: parseInt(req.body.price) - parseInt(req.body.expense),
+        status: req.body.status
     });
     console.log(req.body);
 
@@ -74,7 +77,10 @@ router.put('/plat/:idPlat', (req, res, next) => {
                 number: req.body.number,
                 numberSold: req.body.numberSold,
                 numberRemain: req.body.numberRemain,
-                price: req.body.price
+                price: req.body.price,
+                expense: req.body.expense,
+                profit: parseInt(req.body.price) - parseInt(req.body.expense),
+                status: req.body.status
             }
         },
         function (err, result) {
