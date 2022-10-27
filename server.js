@@ -19,13 +19,6 @@ const connectionString = "mongodb+srv://sarino:sarino@cluster0.xzdv9.mongodb.net
 // const connectionString = "mongodb+srv://sarino:Sarino22Y@cluster0.pm0o0gg.mongodb.net/ekaly22y?retryWrites=true&w=majority";
 
 const urlFront = "http://m1p9mean-sarino.herokuapp.com";
-// app.use((req, res, next) =>{
-//     res.header("Access-Control-Allow-Origin", req.headers.origin);
-//     res.header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-//     res.header("Access-Control-Allow-Methods", "GET,HEAD,POST,PUT,DELETE,OPTIONS");
-//     res.header("Access-Control-Allow-Credentials", "true");
-//     next();
-// });
 
 app.use(cors({
     origin: [urlFront],
@@ -33,9 +26,6 @@ app.use(cors({
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     credentials: true,
 }));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.static('public'));
 
 app.use(express.json());
 app.use(bodyParser.json());
